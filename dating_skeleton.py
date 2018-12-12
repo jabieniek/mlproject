@@ -3,9 +3,10 @@ import pandas as pd
 from sklearn import preprocessing
 from matplotlib import pyplot as plt
 import mappers as mp
+import classifiersregressors as f
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import KNeighborsClassifier, KNeighborsRegressor
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score
 
@@ -32,39 +33,11 @@ df_normalized = pd.DataFrame(np_scaled,columns=["drinkcode","smokecode","bodycod
 
 x_train, x_test, y_train, y_test = train_test_split(features, age, train_size = 0.7, test_size = 0.3, random_state=6)
 
-mlr = LinearRegression()
-mlr.fit(x_train,y_train)
-y_predict = mlr.predict(x_test)
-
-
-#print(y_predict)
-print("MLR: " + str(mlr.score(x_test,y_test)))
-# plt.scatter(y_test,y_predict,alpha=.3)
-# plt.xlim(0,19)
-# plt.ylim(0,19)
-# plt.show()
-
-classifier = KNeighborsClassifier(n_neighbors = 6)
-classifier.fit(x_train,y_train)
-KAgeGuess = classifier.predict(x_test)
-# plt.scatter(y_test,KAgeGuess,alpha=.3)
-# plt.xlim(0,19)
-# plt.ylim(0,19)
-# plt.show()
-print("K Score: " + str(classifier.score(x_test,y_test)))
-print(accuracy_score(y_test,KAgeGuess))
-print(recall_score(y_test,KAgeGuess,average='micro'))
-print(precision_score(y_test,KAgeGuess,average='micro'))
-print(f1_score(y_test,KAgeGuess,average='micro'))
-
-#svc classifier
-svcclassifier = SVC(gamma=5,C=.7)
-svcclassifier.fit(x_train,y_train)
-svcPredict = svcclassifier.predict(x_test)
-print("svc Score: " + str(svcclassifier.score(x_test,y_test)))
-print(accuracy_score(y_test,svcPredict))
-print(recall_score(y_test,svcPredict,average='micro'))
-print(precision_score(y_test,svcPredict,average='micro'))
-print(f1_score(y_test,svcPredict,average='micro'))
+f.RunMLR(x_train,y_train,x_test,y_test)
+f.RunKNNRegression(x_train,y_train,x_test,y_test)
+#f.ChartKNNRegressor(x_train,y_train,x_test,y_test)
+#f.ChartKNNClassifier(x_train,y_train,x_test,y_test)
+f.RunKNNClassifier(x_train,y_train,x_test,y_test)
+f.RunSVC(x_train,y_train,x_test,y_test)
 
 
